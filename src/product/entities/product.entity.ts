@@ -1,5 +1,7 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, ManyToMany } from 'typeorm';
 import { Field, ObjectType } from '@nestjs/graphql';
+import { VendorEntity } from 'src/vendor/entities/vendor.entity';
+import { CreateUserEntity } from 'src/user/entities/createuser.entity';
 
 @ObjectType()
 @Entity('productstable')
@@ -14,6 +16,10 @@ export class ProductEntity {
   productName: string;
 
   @Field()
+  @Column()
+  makeBy: string;
+
+  @Field()
   @Column({default: 'wedding'})
   category: string;
 
@@ -26,7 +32,7 @@ export class ProductEntity {
   productDescription: string;
 
   @Field()
-  @Column({nullable: true})
+  @Column({nullable: true, default: ''})
   productImage: string;
 
   @Field()
@@ -46,7 +52,11 @@ export class ProductEntity {
   @Column({type: 'timestamp', default: ()=> 'current_timestamp'})
   productUploadedDate: Date;
 
-//   //relationship 
-//   @ManyToOne(()=> VendorEntity, (vendor)=> vendor.products)
-//   vendor: VendorEntity
+//relationship between product and vendor posting the product
+  @ManyToOne(()=> VendorEntity, (vendor)=> vendor.products)
+  vendor: VendorEntity
+
+  //relationship between buyer(user) and the products
+  // @ManyToOne(()=> CreateUserEntity, (user) => user.products)
+  // user: CreateUserEntity
 }

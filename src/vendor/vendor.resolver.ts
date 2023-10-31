@@ -3,6 +3,7 @@ import { VendorEntity } from './entities/vendor.entity';
 import { VendorInput } from './input/vendor.input';
 import { VendorService } from './vendor.service';
 import { UpdateVendorDto } from './input/update.vendor.input';
+import { ChangeVendorPasswordDTO } from './input/changeVendorPassword.input';
 
 @Resolver(of => VendorEntity)
 export class VendorResolver {
@@ -19,8 +20,13 @@ export class VendorResolver {
     }
 
     @Query(returns => [VendorEntity])
-    findvendor(){
+    findvendors(){
         return this.vendorService.findallvendors()
+    }
+
+    @Mutation(returns => VendorEntity)
+    changevendorPassword(@Args('id') id: string, @Args('changevendorPassword') changeVendorpassword: ChangeVendorPasswordDTO){
+        return this.vendorService.changeVendorPassword(id, changeVendorpassword)
     }
 
 }

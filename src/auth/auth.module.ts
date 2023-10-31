@@ -7,6 +7,9 @@ import { JwtModule } from '@nestjs/jwt';
 import { PassportModule } from '@nestjs/passport';
 import { VendorEntity } from 'src/vendor/entities/vendor.entity';
 import { PlannerEntity } from 'src/planner/entities/planner.entity';
+import { JwtStrategy } from './strategy/jwt.strategy';
+import { GqlAuthGuard } from './guards/graphql.guard';
+import { JwtAuthGuard } from './guards/jwt.guard';
 require('dotenv').config();
 
 @Module({
@@ -25,7 +28,12 @@ require('dotenv').config();
   ])
   ],
   controllers: [AuthController],
-  providers: [ AuthService]
+  providers: [
+    AuthService,
+    JwtStrategy,
+    GqlAuthGuard,
+    JwtAuthGuard
+  ]
 })
 export class AuthModule {}
 

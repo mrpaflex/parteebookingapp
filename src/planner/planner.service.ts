@@ -6,15 +6,17 @@ import { Repository } from 'typeorm';
 import { hashed } from 'src/common/hashed/util.hash';
 import { updatePlannerDto } from './input/update.planner';
 import { GraphQLError } from 'graphql';
+import { ChangePlannerPasswordDTO } from './input/changePassword.planner';
 
 @Injectable()
 export class PlannerService {
+   
  
     constructor(@InjectRepository(PlannerEntity)
     private plannerReposi: Repository<PlannerEntity>
     ){}
 
-    async vPlannerRegister(plannerinput: PlanerInputDto) {
+    async PlannerRegister(plannerinput: PlanerInputDto) {
         const planner = await this.plannerReposi.findOne({
             where:{
                 email: plannerinput.email
@@ -38,7 +40,7 @@ export class PlannerService {
     }
 
    
-    async updatevendor(id: string, updateplanner: updatePlannerDto) {
+    async updatePlanner(id: string, updateplanner: updatePlannerDto) {
         const planner = await this.plannerReposi.findOne({
             where:{
                 id: id,
@@ -58,8 +60,29 @@ export class PlannerService {
         return await this.plannerReposi.find({
             where: {
                 suspended: false,
-                approved: true
+                //approved: true
             }
         })
+    }
+
+    //change password
+
+    async changePlannerPassword(id: string, changePlannerPassword: ChangePlannerPasswordDTO) {
+        const planner = await this.plannerReposi.findOne({
+            where:{
+                id:id
+            }
+        })
+
+        if (changePlannerPassword.password !== changePlannerPassword.confirmedPassword) {
+            throw new GraphQLError('password not matched')
+        }
+        if(changePlannerPassword.password === planner.password){
+            throw new GraphQLError('you can not change to same password')
+        }
+
+        planner.password = await hashed(changePlannerPassword.password)
+        
+        await this.plannerReposi.save(planner)
     }
 }

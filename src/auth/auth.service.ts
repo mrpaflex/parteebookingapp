@@ -51,15 +51,7 @@ export class AuthService {
         }
      
 
-        //no need checking
-        async getUserjwt(id: string){
-         const user = await this.authRepository.findOne({
-             where: {
-                id: id
-             }
-         })
-         return user;
-    }
+  
 
    async loginvendor(loginvendordto: LoginVendorDto) {
         const vendor = await this.vendorReposi.findOne({
@@ -110,5 +102,26 @@ export class AuthService {
              accesstoken: this.jwtservice.sign(payload),
          }
     }
+
+    
+      //very importance without this jwt can not grap the current logged in user
+      //this function is call in strategy file check to understand
+      async getUserjwt(id: string){
+        const user = await this.authRepository.findOne({ where: {id: id}})
+        const planner = await this.plannerRepository.findOne({ where:{id:id}})
+        const vendor = await this.vendorReposi.findOne({ where:{id:id}})
+
+        if (user) {
+           return user;
+        }
+        if (planner) {
+           return planner
+        }
+        if (vendor) {
+           return vendor
+        }
+
+       
+   }
 
 }

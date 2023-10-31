@@ -3,6 +3,7 @@ import { PlannerEntity } from './entities/planner.entity';
 import { PlanerInputDto } from './input/createplanner.input';
 import { PlannerService } from './planner.service';
 import { updatePlannerDto } from './input/update.planner';
+import { ChangePlannerPasswordDTO } from './input/changePassword.planner';
 
 @Resolver(of => PlannerEntity)
 export class PlannerResolver {
@@ -12,17 +13,22 @@ export class PlannerResolver {
     
     @Mutation(returns => PlannerEntity)
     async plannerRegister(@Args('plannerinput') plannerinput: PlanerInputDto){
-        return await this.plannerService.vPlannerRegister( plannerinput)
+        return await this.plannerService.PlannerRegister( plannerinput)
     }
 
     @Mutation(returns => PlannerEntity)
-    updatevendor(@Args('id') id: string, @Args('updateplannerinput') updateplanner: updatePlannerDto){
-        return this.plannerService.updatevendor(id, updateplanner)
+    updatePlanner(@Args('id') id: string, @Args('updateplannerinput') updateplanner: updatePlannerDto){
+        return this.plannerService.updatePlanner(id, updateplanner)
     }
 
     @Query(returns => [PlannerEntity])
-    findvendor(){
+    findplanners(){
         return this.plannerService.findallplanner()
+    }
+
+    @Mutation(returns => PlannerEntity)
+    async changePlannerPassword(@Args('id') id: string, @Args('chnagePlannerPassword') changePlannerPassword: ChangePlannerPasswordDTO){
+        return this.plannerService.changePlannerPassword(id, changePlannerPassword)
     }
 
 }

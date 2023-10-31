@@ -12,7 +12,7 @@ export interface JwtPayload{
   @Injectable()
   export class JwtStrategy extends PassportStrategy(Strategy) {
     constructor(private authservice: AuthService, 
-      private userRepo: UserService
+    //  private userRepo: UserService
       ) {
       super({
         jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
@@ -29,6 +29,7 @@ export interface JwtPayload{
   
      }
      return user
+     
     }
 
     // async validated(payload: JwtPayload){

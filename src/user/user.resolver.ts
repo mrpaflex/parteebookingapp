@@ -4,6 +4,7 @@ import { CreateUserInput } from './input/createuser.input.dto';
 import { UserService } from './user.service';
 import { UpdateUserDto } from './input/updateuser.input';
 import { MailService } from 'src/mail/mail.service';
+import { ChangePasswordDTO } from './input/changePassword.input';
 
 @Resolver(of=> CreateUserEntity)
 export class UserResolver {
@@ -25,6 +26,12 @@ export class UserResolver {
     @Args('updateuser') updateuser: UpdateUserDto
     ){
         return this.userservice.updateUser(id, updateuser)
+    }
+
+    @Mutation(returns => CreateUserEntity)
+    async userChnagePassword(@Args('id') id: string, @Args('userchangePasswordinput') userChangepassword: ChangePasswordDTO){
+        return await this.userservice.changeUserPassword(id, userChangepassword)
+
     }
 
     @Query(returns => [CreateUserEntity])

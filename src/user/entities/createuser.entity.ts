@@ -1,5 +1,6 @@
 import { Field, ObjectType } from "@nestjs/graphql";
-import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { ProductEntity } from "src/product/entities/product.entity";
+import { BeforeInsert, Column, Entity, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
 
   @ObjectType()
   @Entity('usertable')
@@ -35,4 +36,9 @@ import { BeforeInsert, Column, Entity, PrimaryGeneratedColumn } from "typeorm";
     @Column({ default: false })
     emailConfirmed: boolean;
   
+
+    // @ManyToMany(()=> ProductEntity, (products) => products.user)
+
+    // products: ProductEntity[]
+
   }

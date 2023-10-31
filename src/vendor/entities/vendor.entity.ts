@@ -1,5 +1,6 @@
 import { Field, ObjectType } from "@nestjs/graphql";
-import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
+import { ProductEntity } from "src/product/entities/product.entity";
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
 @ObjectType()
   @Entity('vendortable')
@@ -26,7 +27,7 @@ import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
   
     @Field()
     @Column()
-    bussineName: string;
+    businessName: string;
 
 
   
@@ -62,6 +63,9 @@ import { Column, Entity, PrimaryGeneratedColumn } from "typeorm";
     suspended: boolean;
   
     //relationship
+     //one to many relations
+  @OneToMany(() => ProductEntity , (product) => product.vendor)
+  products:ProductEntity[];
 
   }
   

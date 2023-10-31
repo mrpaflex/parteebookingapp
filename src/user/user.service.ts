@@ -9,9 +9,11 @@ import { MailService } from 'src/mail/mail.service';
 import { JwtService } from '@nestjs/jwt';
 import { UpdateUserDto } from './input/updateuser.input';
 import { AuthService } from 'src/auth/auth.service';
+import { ChangePasswordDTO } from './input/changePassword.input';
 
 @Injectable()
 export class UserService {
+   
    
    
    
@@ -49,26 +51,7 @@ export class UserService {
         return await this.userepository.find();
     }
 
-    //confirma email
-
-    // async condirmedUser(id: string){
-    // const payload = this.jwtService.verify(id);
-    // const email = payload.email
-
-    // const user = await this.userepository.findOne({
-    //     where:{
-    //         email: email
-    //     }
-    // })
-
-    // if (user) {
-    //     user.emailConfirmed = true;
-    //     await this.updateUser(id, user)
-    //     return user
-    // }
-
-    // }
-
+  
   async  updateUser(id: string, updateuser: UpdateUserDto) {
         const user = await this.userepository.findOne({
             where:{
@@ -83,14 +66,24 @@ export class UserService {
         return updatedeuser
     }
 
-//     async getUserjwt2(id: string){
-//         const user = await this.userepository.findOne({
-//             where:{
-//                 id: id
-//             }
-//         })
-//         return user;
-//    }
+//change password
+async changeUserPassword(id: string, userChangepassword: ChangePasswordDTO) {
+   const user = await this.userepository.findOne({
+    where:{
+        id:id,
+    }
+   })
+   
+   if(userChangepassword.password !== userChangepassword.confirmedPassword){
+    throw new GraphQLError('password change do not matched')
+   }
+   
+     user.password = await hashed(userChangepassword.password)
+    
+
+   await this.userepository.save(user)
+   return user
+}
 
 }
 

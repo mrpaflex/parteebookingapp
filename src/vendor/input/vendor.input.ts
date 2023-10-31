@@ -7,7 +7,7 @@ export class VendorInput {
   @Field()
   @IsNotEmpty()
   @IsString()
-  bussineName: string;
+  businessName: string;
 
   
   @Field()

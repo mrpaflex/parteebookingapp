@@ -1,29 +1,29 @@
 import { Field, InputType } from "@nestjs/graphql";
 
 @InputType()
-export class UpdateVendorDto{
+export class UpdateProductsInput{
 
 
     @Field({nullable: true})
-    firstName: string;
+    productName: string;
 
     @Field({nullable: true})
-    lastName: string;
+    productDescription: string;
 
     @Field({nullable: true})
-    businessName: string;
+    productImage: string;
 
     @Field({nullable: true})
-    location: string;
+    priceAmount: number;
 
     @Field({nullable: true})
     category: string;
 
      @Field({nullable: true})
-     years_of_Experience: string;
+     priceNegotiable: string;
 
      @Field({nullable: true})
-     businessPhone: string;
+     makeBy: string;
 
 }
 
