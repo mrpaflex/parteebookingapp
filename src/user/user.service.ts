@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { CreateUserInput } from './input/createuser.input.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserEntity } from './entities/createuser.entity';
@@ -10,19 +10,43 @@ import { JwtService } from '@nestjs/jwt';
 import { UpdateUserDto } from './input/updateuser.input';
 import { AuthService } from 'src/auth/auth.service';
 import { ChangePasswordDTO } from './input/changePassword.input';
+import { ForgetUserPasswordDTO } from './dto/forgetPassword.input';
+import { ConfigService } from '@nestjs/config';
+import * as crypto from 'crypto';
+import * as nodemailer from 'nodemailer';
+import { ResetPasswordDTO } from './dto/resetPassword.input';
+
+
 
 @Injectable()
 export class UserService {
-   
-   
-   
-   
+    private transporter: nodemailer.Transporter;
+  
     constructor(@InjectRepository(CreateUserEntity) 
     private userepository: Repository<CreateUserEntity>,
     private jwtService: JwtService,
-    private mailService: MailService
+    private mailService: MailService,
+    private configService: ConfigService
     
-    ){}
+    
+    ){
+
+        
+        this.transporter = nodemailer.createTransport({
+            host: configService.get('MAIL_HOST'),
+            port: 2525,
+            secure: false,
+            auth: {
+              user: configService.get('MAIL_USER'),
+              pass: configService.get('MAIL_PASSWORD')
+            },
+
+            tls: {
+                rejectUnauthorized: false // Accept self-signed certificates (for debugging)
+            }
+          });
+    }
+
     async createuser(createUserinput: CreateUserInput) {
        
         const user = await this.userepository.findOne({
@@ -83,6 +107,70 @@ async changeUserPassword(id: string, userChangepassword: ChangePasswordDTO) {
 
    await this.userepository.save(user)
    return user
+}
+
+//this is the real one
+
+async  forgetUserPassword(input: ForgetUserPasswordDTO) {
+    const user = await this.userepository.findOne({
+        where:{
+            email: input.email
+        }
+    })
+
+    if (!user) {
+        throw new HttpException('this email does not exist', HttpStatus.UNPROCESSABLE_ENTITY)
+    }
+    ///process with send link or token to the user
+    const generateResetToken = crypto.randomBytes(32).toString('hex');
+
+    console.log(generateResetToken)
+    const resetTokenExpiration = new Date();
+    resetTokenExpiration.setHours(resetTokenExpiration.getHours()+ 1);
+    
+    user.resetToken = generateResetToken;
+    user.resetTokenExpiration = resetTokenExpiration
+    await this.userepository.save(user);
+
+      const emailMessage ={
+        from: 'ukosaviour21@gmail.com',
+        to: input.email,
+        subject: 'password Reset',
+        Text: `Click the following link to reset your password: https://yourwebsite.com/reset-password?token=${generateResetToken}`
+      }
+
+    try {
+        const info = await this.transporter.sendMail(emailMessage);
+        return info;
+      } catch (error) {
+        throw new Error(error.message);
+      }   
+}
+
+//user reset password link
+async resetPassword(input: ResetPasswordDTO) {
+const user = await this.userepository.findOne({
+    where:{
+        email: input.email
+    }
+})
+
+if (!user) {
+    throw new HttpException('check your email spelling', HttpStatus.UNPROCESSABLE_ENTITY)
+}
+if (user.resetToken !== input.token || user.resetTokenExpiration < new Date()) {
+    throw new Error('inavlid or expired reset token')
+}
+
+if (input.newPassword !== input.confirmedNewPassword) {
+    throw new HttpException('password does not matched', HttpStatus.UNPROCESSABLE_ENTITY)
+}
+
+user.password = await hashed(input.newPassword);
+user.resetToken = null;
+user.resetTokenExpiration = null;
+
+await this.userepository.save(user)
 }
 
 }

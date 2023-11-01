@@ -5,6 +5,8 @@ import { UserService } from './user.service';
 import { UpdateUserDto } from './input/updateuser.input';
 import { MailService } from 'src/mail/mail.service';
 import { ChangePasswordDTO } from './input/changePassword.input';
+import { ForgetUserPasswordDTO } from './dto/forgetPassword.input';
+import { ResetPasswordDTO } from './dto/resetPassword.input';
 
 @Resolver(of=> CreateUserEntity)
 export class UserResolver {
@@ -38,5 +40,8 @@ export class UserResolver {
     findusers(){
         return this.userservice.findalluser()
     }
+
+   
+
 
 }

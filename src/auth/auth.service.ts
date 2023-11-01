@@ -1,6 +1,6 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { comparePassword } from 'src/common/hashed/util.hash';
+import { comparePassword, hashed } from 'src/common/hashed/util.hash';
 import { LoginUserDto } from 'src/user/dto/loginuser.dto';
 import { CreateUserEntity } from 'src/user/entities/createuser.entity';
 import { Repository } from 'typeorm';
@@ -12,17 +12,17 @@ import { LoginPlannerDto } from 'src/planner/dto/login.planner.dto';
 
 @Injectable()
 export class AuthService {
-  
- 
-
     constructor(@InjectRepository(CreateUserEntity)
     private authRepository: Repository<CreateUserEntity>,
     @InjectRepository(VendorEntity)
     private vendorReposi: Repository<VendorEntity>,
     @InjectRepository(PlannerEntity)
     private plannerRepository: Repository<PlannerEntity>,
-    private jwtservice: JwtService
-    ){}
+    private jwtservice: JwtService,
+   
+    ){
+
+    }
     
    async  loginuser(logindto: LoginUserDto) {
         const user = await this.authRepository.findOne({
@@ -103,6 +103,9 @@ export class AuthService {
          }
     }
 
+
+    //
+   
     
       //very importance without this jwt can not grap the current logged in user
       //this function is call in strategy file check to understand
@@ -120,8 +123,6 @@ export class AuthService {
         if (vendor) {
            return vendor
         }
-
-       
    }
 
 }

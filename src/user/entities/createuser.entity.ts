@@ -35,6 +35,12 @@ import { BeforeInsert, Column, Entity, ManyToMany, PrimaryGeneratedColumn } from
 
     @Column({ default: false })
     emailConfirmed: boolean;
+
+    @Column({ nullable: true })
+    resetToken: string;
+
+    @Column({ type: 'timestamp', nullable: true })
+    resetTokenExpiration: Date;
   
 
     // @ManyToMany(()=> ProductEntity, (products) => products.user)

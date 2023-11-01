@@ -55,6 +55,12 @@ export class PlannerEntity {
   @Column({ nullable: true, default: '' })
   plannerPhoneNumber: string;
 
+  @Column({ nullable: true })
+  resetToken: string;
+
+  @Column({ type: 'timestamp', nullable: true })
+  resetTokenExpiration: Date;
+
   @Field()
   @Column({type: 'timestamp', default: ()=> 'current_timestamp'})
   dateRegistered: Date;

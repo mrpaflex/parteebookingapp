@@ -10,6 +10,7 @@ import { PlannerEntity } from 'src/planner/entities/planner.entity';
 import { JwtStrategy } from './strategy/jwt.strategy';
 import { GqlAuthGuard } from './guards/graphql.guard';
 import { JwtAuthGuard } from './guards/jwt.guard';
+import { ConfigService } from '@nestjs/config';
 require('dotenv').config();
 
 @Module({
@@ -32,7 +33,8 @@ require('dotenv').config();
     AuthService,
     JwtStrategy,
     GqlAuthGuard,
-    JwtAuthGuard
+    JwtAuthGuard,
+    ConfigService
   ]
 })
 export class AuthModule {}

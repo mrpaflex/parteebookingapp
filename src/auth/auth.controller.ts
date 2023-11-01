@@ -9,6 +9,7 @@ import { CreateUserEntity } from 'src/user/entities/createuser.entity';
 import { VendorEntity } from 'src/vendor/entities/vendor.entity';
 import { PlannerEntity } from 'src/planner/entities/planner.entity';
 
+
 @Controller('auth')
 export class AuthController {
 
@@ -28,6 +29,9 @@ export class AuthController {
         return this.authservice.loginplanner(loginplannerdto)
     }
 
+
+  
+
     @Get('userprofile')
     @UseGuards(JwtAuthGuard)
     async currentUserLoginProfile(@GetRestApiCurrentUser() user: CreateUserEntity){
@@ -45,4 +49,6 @@ export class AuthController {
     async currentplannerLoginProfile(@GetRestApiCurrentUser() user: PlannerEntity){
         return user;
     }
+
+   
 }

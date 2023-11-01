@@ -61,6 +61,12 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
   
     @Column({ default: false })
     suspended: boolean;
+
+    @Column({ nullable: true })
+    resetToken: string;
+
+    @Column({ type: 'timestamp', nullable: true })
+    resetTokenExpiration: Date;
   
     //relationship
      //one to many relations
