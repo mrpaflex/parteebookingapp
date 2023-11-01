@@ -170,6 +170,9 @@ export class PlannerService {
     planner.resetTokenExpiration = null;
     
     await this.plannerReposi.save(planner)
+    return {
+        info: 'password change successfull'
+    }
     
     }  
 }

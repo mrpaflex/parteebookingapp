@@ -62,6 +62,15 @@ import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from "typeorm";
     @Column({ default: false })
     suspended: boolean;
 
+    @Column({ default: false })
+    emailConfirmed: boolean;
+
+    @Column({nullable: true})
+    emailConfirmedToken: string;
+    
+    @Column({ type: 'timestamp', nullable: true })
+    emailTokenExpiration: Date;
+
     @Column({ nullable: true })
     resetToken: string;
 

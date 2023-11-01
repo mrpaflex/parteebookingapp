@@ -20,6 +20,7 @@ import { ResetPasswordDTO } from './dto/resetPassword.input';
 
 @Injectable()
 export class UserService {
+  
     private transporter: nodemailer.Transporter;
   
     constructor(@InjectRepository(CreateUserEntity) 
@@ -27,8 +28,6 @@ export class UserService {
     private jwtService: JwtService,
     private mailService: MailService,
     private configService: ConfigService
-    
-    
     ){
 
         
@@ -121,7 +120,7 @@ async  forgetUserPassword(input: ForgetUserPasswordDTO) {
     if (!user) {
         throw new HttpException('this email does not exist', HttpStatus.UNPROCESSABLE_ENTITY)
     }
-    ///process with send link or token to the user
+    //process with send link or token to the user
     const generateResetToken = crypto.randomBytes(32).toString('hex');
 
     console.log(generateResetToken)
@@ -171,6 +170,9 @@ user.resetToken = null;
 user.resetTokenExpiration = null;
 
 await this.userepository.save(user)
+return {
+    info: 'password change successfull'
+}
 }
 
 }

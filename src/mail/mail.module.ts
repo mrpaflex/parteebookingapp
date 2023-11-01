@@ -4,14 +4,27 @@ import { Module } from '@nestjs/common';
 import { MailService } from './mail.service';
 import { join } from 'path';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { CreateUserEntity } from 'src/user/entities/createuser.entity';
+import { MailController } from './mail.controller';
+import { VendorEntity } from 'src/vendor/entities/vendor.entity';
+import { PlannerEntity } from 'src/planner/entities/planner.entity';
 
 
 @Module({
   imports: [
-   
+    TypeOrmModule.forFeature([
+      CreateUserEntity,
+      VendorEntity,
+      PlannerEntity
+    ])
   ],
-  providers: [MailService],
+  providers: [
+    MailService,
+     ConfigService
+    ],
   exports: [MailService],
+  controllers: [MailController],
 })
 export class MailModule {}
 

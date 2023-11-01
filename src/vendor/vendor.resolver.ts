@@ -4,14 +4,20 @@ import { VendorInput } from './input/vendor.input';
 import { VendorService } from './vendor.service';
 import { UpdateVendorDto } from './input/update.vendor.input';
 import { ChangeVendorPasswordDTO } from './input/changeVendorPassword.input';
+import { MailService } from 'src/mail/mail.service';
 
 @Resolver(of => VendorEntity)
 export class VendorResolver {
-    constructor(private vendorService: VendorService){}
+    constructor(
+        private vendorService: VendorService,
+        private mailService: MailService
+        ){}
 
     @Mutation(returns => VendorEntity)
     async vendorRegister(@Args('vendorinput') vendorinput: VendorInput){
-        return await this.vendorService.vendorRegister( vendorinput)
+        const vendor= await this.vendorService.vendorRegister( vendorinput)
+        await this.mailService.sendVendorConfirmation(vendor)
+        return vendor
     }
 
     @Mutation(returns => VendorEntity)

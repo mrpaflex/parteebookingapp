@@ -36,6 +36,12 @@ import { BeforeInsert, Column, Entity, ManyToMany, PrimaryGeneratedColumn } from
     @Column({ default: false })
     emailConfirmed: boolean;
 
+    @Column({nullable: true})
+    emailConfirmedToken: string;
+    
+    @Column({ type: 'timestamp', nullable: true })
+    emailTokenExpiration: Date;
+
     @Column({ nullable: true })
     resetToken: string;
 

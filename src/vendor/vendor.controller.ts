@@ -6,17 +6,17 @@ import { ResetVendorPasswordDTO } from './dto/resetpassword.dto';
 @Controller('vendor')
 export class VendorController {
 
-    constructor(private vendprService: VendorService){}
+    constructor(private vendorService: VendorService){}
 
     @Post('forgetpassword')
     forgetVendorPassword(@Body() input: ForgetVendorPasswordDTO){
-        return this.vendprService.forgetVendorPassword(input)
+        return this.vendorService.forgetVendorPassword(input)
         
     }
 
     @Post('resetpasssword')
      resetpassword(@Body() input: ResetVendorPasswordDTO){
-        return  this.vendprService.resetVendorPassword(input)
+        return  this.vendorService.resetVendorPassword(input)
     }
 
 }

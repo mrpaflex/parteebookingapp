@@ -166,5 +166,8 @@ export class VendorService {
         vendor.resetTokenExpiration = null;
         
         await this.vendorRepo.save(vendor)
+        return {
+            info: 'password change successfull'
+        }
     }
 }

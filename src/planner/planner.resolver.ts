@@ -4,16 +4,24 @@ import { PlanerInputDto } from './input/createplanner.input';
 import { PlannerService } from './planner.service';
 import { updatePlannerDto } from './input/update.planner';
 import { ChangePlannerPasswordDTO } from './input/changePassword.planner';
+import { MailService } from 'src/mail/mail.service';
 
 @Resolver(of => PlannerEntity)
 export class PlannerResolver {
 
-    constructor(private plannerService: PlannerService){}
+    constructor(
+        private plannerService: PlannerService,
+        private mailService: MailService
+        ){}
 
     
     @Mutation(returns => PlannerEntity)
     async plannerRegister(@Args('plannerinput') plannerinput: PlanerInputDto){
-        return await this.plannerService.PlannerRegister( plannerinput)
+        const planner = await this.plannerService.PlannerRegister( plannerinput)
+
+        await this.mailService.sendPlannerConfirmation(planner)
+        return planner
+        
     }
 
     @Mutation(returns => PlannerEntity)

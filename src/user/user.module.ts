@@ -7,10 +7,15 @@ import { JwtService } from '@nestjs/jwt';
 import { MailService } from 'src/mail/mail.service';
 import { UserController } from './user.controller';
 import { ConfigService } from '@nestjs/config';
+import { VendorEntity } from 'src/vendor/entities/vendor.entity';
+import { PlannerEntity } from 'src/planner/entities/planner.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([
-    CreateUserEntity
+    VendorEntity,
+    CreateUserEntity,
+    PlannerEntity
+    
   ])
   ],
 
@@ -19,10 +24,9 @@ import { ConfigService } from '@nestjs/config';
     UserService,
     JwtService,
     MailService,
-    ConfigService
-
+    ConfigService,
   ],
-
+  exports: [UserService],
   controllers: [UserController]
 })
 export class UserModule {}

@@ -55,6 +55,15 @@ export class PlannerEntity {
   @Column({ nullable: true, default: '' })
   plannerPhoneNumber: string;
 
+  @Column({ default: false })
+  emailConfirmed: boolean;
+
+  @Column({nullable: true})
+  emailConfirmedToken: string;
+  
+  @Column({ type: 'timestamp', nullable: true })
+  emailTokenExpiration: Date;
+
   @Column({ nullable: true })
   resetToken: string;
 
