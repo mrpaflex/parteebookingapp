@@ -1,7 +1,8 @@
-import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, ManyToMany } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, ManyToMany, OneToMany, JoinTable } from 'typeorm';
 import { Field, ObjectType } from '@nestjs/graphql';
 import { VendorEntity } from 'src/vendor/entities/vendor.entity';
 import { CreateUserEntity } from 'src/user/entities/createuser.entity';
+import { BookingEntity } from 'src/booking/entities/booking.entity';
 
 @ObjectType()
 @Entity('productstable')
@@ -56,7 +57,8 @@ export class ProductEntity {
   @ManyToOne(()=> VendorEntity, (vendor)=> vendor.products)
   vendor: VendorEntity
 
-  //relationship between buyer(user) and the products
-  // @ManyToOne(()=> CreateUserEntity, (user) => user.products)
-  // user: CreateUserEntity
+  //this is for bookin please
+  @OneToMany(()=> BookingEntity, (booking)=> booking.product)
+  booking: BookingEntity[]
+  
 }

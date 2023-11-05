@@ -1,6 +1,7 @@
 import { Field, ObjectType } from "@nestjs/graphql";
+import { BookingEntity } from "src/booking/entities/booking.entity";
 import { ProductEntity } from "src/product/entities/product.entity";
-import { BeforeInsert, Column, Entity, ManyToMany, PrimaryGeneratedColumn } from "typeorm";
+import { BeforeInsert, Column, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
   @ObjectType()
   @Entity('usertable')
@@ -48,9 +49,7 @@ import { BeforeInsert, Column, Entity, ManyToMany, PrimaryGeneratedColumn } from
     @Column({ type: 'timestamp', nullable: true })
     resetTokenExpiration: Date;
   
-
-    // @ManyToMany(()=> ProductEntity, (products) => products.user)
-
-    // products: ProductEntity[]
-
+    //relationship between users and what they are booking
+    @OneToMany(()=> BookingEntity, (booking)=> booking.user)
+    bookings: BookingEntity[]
   }

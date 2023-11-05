@@ -4,7 +4,7 @@ import { CreateProductInput } from './input/createProducts.input';
 import { ProductService } from './product.service';
 import { UpdateProductsInput } from './input/updateProduct.input';
 import { UseGuards } from '@nestjs/common';
-import { GqlAuthGuard } from 'src/auth/guards/graphql.guard';
+//import { GqlAuthGuard } from 'src/auth/guards/graphql.guard';
 import { GetCurrentGqlUser } from 'src/common/decorators/graphQl.decorator';
 import { VendorEntity } from 'src/vendor/entities/vendor.entity';
 
@@ -13,7 +13,7 @@ export class ProductResolver {
     constructor(private productService: ProductService){}
 
     @Mutation(returns => ProductEntity)
-    @UseGuards(GqlAuthGuard)
+    //@UseGuards(GqlAuthGuard)
     async createProducts(@Args('productInput') createProduct: CreateProductInput, @GetCurrentGqlUser()vendor: VendorEntity){
         return this.productService.createProducts(createProduct, vendor)
     }
@@ -30,7 +30,6 @@ export class ProductResolver {
 
 
     @Query(returns=> ProductEntity)
-    @UseGuards(GqlAuthGuard)
     findAProduct(@Args('id') id: string){
         return this.productService.findOneProduct(id)
     }
