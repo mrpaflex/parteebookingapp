@@ -4,9 +4,9 @@ import { IsNotEmpty } from "class-validator";
 @InputType()
 export class AddToCartInput{
 
-    @Field(()=> [String])
+    @Field()
     @IsNotEmpty()
-    productId: string[];
+    productId: string;
 
     @Field({nullable: true})
     quantity: number;

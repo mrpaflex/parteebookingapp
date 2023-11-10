@@ -68,7 +68,7 @@ export class CartService {
 
     const item = await this.productRepository.findOne({
       where: {
-        id: In(addToCartInput.productId),
+        id: addToCartInput.productId,
       },
     });
 
