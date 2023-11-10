@@ -12,6 +12,7 @@ import { ProductModule } from './product/product.module';
 import { MailModule } from './mail/mail.module';
 import { db } from './common/database/db.config';
 //import { pgdb } from './common/database/pgconnection';
+import { CartModule } from './cart/cart.module';
 
 require('dotenv').config();
 
@@ -39,8 +40,8 @@ require('dotenv').config();
     }),  
 
     //for development
-    // TypeOrmModule.forRoot(pgdb),
-    UserModule, AuthModule, VendorModule, PlannerModule, ProductModule, MailModule, BookingModule
+    //TypeOrmModule.forRoot( pgdb),
+    UserModule, AuthModule, VendorModule, PlannerModule, ProductModule, MailModule, BookingModule, CartModule
   ],
 })
 export class AppModule {}

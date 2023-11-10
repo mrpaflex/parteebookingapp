@@ -35,7 +35,7 @@ async bookProduct(bookinginput: BookingInput, user: CreateUserEntity, productIds
     //     throw new GraphQLError('you need to select a product')
     // }
 
-   productarray.push(...products);
+   productarray.push(products);
 
     if(!productarray || productarray.length === 0){
         throw new GraphQLError('you need to select a product')
@@ -49,10 +49,8 @@ async bookProduct(bookinginput: BookingInput, user: CreateUserEntity, productIds
     booked.eventType = bookinginput.eventType;
     booked.eventLocation = bookinginput.eventLocation;
     booked.user= user;
-    booked.product = {...productarray}
+    booked.product = productarray
     await this.bookiRepository.save(booked)
-  
-    console.log(booked)
         return booked
     
 }

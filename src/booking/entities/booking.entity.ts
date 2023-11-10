@@ -35,9 +35,16 @@ export class BookingEntity{
     @Column({type: 'timestamp', default: ()=> 'current_timestamp'})
     bookingDate: Date;
 
-    @ManyToOne(()=> ProductEntity, (product)=>product.booking)
-    product: ProductEntity;
+    // @ManyToMany(()=> ProductEntity, (product)=>product.booking)
+    // @JoinTable()
+    // product: ProductEntity[];
 
+    @ManyToMany(()=> ProductEntity)
+    @JoinTable()
+    product: ProductEntity[];
+
+
+//booking with users
     @ManyToOne(()=> CreateUserEntity, (user)=>user.bookings)
     user: CreateUserEntity
 

@@ -1,6 +1,6 @@
 import { PostgresConnectionOptions } from "typeorm/driver/postgres/PostgresConnectionOptions";
-require('dotenv').config();
-//this is for development
+// require('dotenv').config();
+// //this is for development
 
 // export const pgdb: PostgresConnectionOptions  = {
 //     type: 'postgres',
@@ -10,5 +10,8 @@ require('dotenv').config();
 //     database: process.env.DB_DATABASE,
 //     username: process.env.DB_USERNAME,
 //     entities: ["dist/**/*.entity{.ts,.js}"],
-//     synchronize: true
+//     synchronize: true,
+//     ssl: {
+//         rejectUnauthorized: true
+//     }
 // }

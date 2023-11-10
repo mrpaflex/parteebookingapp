@@ -1,5 +1,6 @@
 import { Field, ObjectType } from "@nestjs/graphql";
 import { BookingEntity } from "src/booking/entities/booking.entity";
+import { Carts } from "src/cart/entities/cart.entity";
 import { ProductEntity } from "src/product/entities/product.entity";
 import { BeforeInsert, Column, Entity, ManyToMany, OneToMany, PrimaryGeneratedColumn } from "typeorm";
 
@@ -52,4 +53,9 @@ import { BeforeInsert, Column, Entity, ManyToMany, OneToMany, PrimaryGeneratedCo
     //relationship between users and what they are booking
     @OneToMany(()=> BookingEntity, (booking)=> booking.user)
     bookings: BookingEntity[]
+
+    //add to cart relation between 
+    @OneToMany(()=> Carts, (carts) => carts.user)
+    carts: Carts[]
+    
   }
