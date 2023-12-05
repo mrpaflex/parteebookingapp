@@ -4,7 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { CreateUserEntity } from './entities/createuser.entity';
 import { Repository } from 'typeorm';
 import { GraphQLError } from 'graphql';
-import { hashed } from 'src/common/hashed/util.hash';
+import { comparePassword, hashed } from 'src/common/hashed/util.hash';
 import { MailService } from 'src/mail/mail.service';
 import { JwtService } from '@nestjs/jwt';
 import { UpdateUserDto } from './input/updateuser.input';
@@ -89,7 +89,7 @@ export class UserService {
         return updatedeuser
     }
 
-//change password
+// user change old password to new password
 async changeUserPassword(id: string, userChangepassword: ChangePasswordDTO) {
    const user = await this.userepository.findOne({
     where:{
@@ -97,15 +97,22 @@ async changeUserPassword(id: string, userChangepassword: ChangePasswordDTO) {
     }
    })
    
-   if(userChangepassword.password !== userChangepassword.confirmedPassword){
-    throw new GraphQLError('password change do not matched')
-   }
-   
-     user.password = await hashed(userChangepassword.password)
-    
 
-   await this.userepository.save(user)
-   return user
+   
+if (await comparePassword(userChangepassword.confirmedOldPassword, user.password) === false) {
+    throw new GraphQLError('your confirmed old password does not matched')
+}
+
+if(userChangepassword.password !== userChangepassword.confirmedPassword){
+    throw new GraphQLError('password and confirmed password do not matched')
+   }
+
+     user.password = await hashed(userChangepassword.password)
+
+     const updatedPassword = Object.assign(user, userChangepassword);
+
+   //await this.userepository.save(user)
+   return updatedPassword
 }
 
 //this is the real one

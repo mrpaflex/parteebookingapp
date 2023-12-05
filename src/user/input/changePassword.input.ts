@@ -9,4 +9,7 @@ export class ChangePasswordDTO{
     @Field()
     confirmedPassword: string
 
+    @Field()
+    confirmedOldPassword: string
+
 }
