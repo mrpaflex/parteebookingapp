@@ -90,14 +90,16 @@ export class UserService {
     }
 
 // user change old password to new password
-async changeUserPassword(id: string, userChangepassword: ChangePasswordDTO) {
+async changeUserPassword(userid: CreateUserEntity, userChangepassword: ChangePasswordDTO) {
    const user = await this.userepository.findOne({
     where:{
-        id:id,
+        id:userid.id,
     }
    })
    
-
+if (userid.id !== user.id) {
+    throw new GraphQLError('you are not the owner account')
+}
    
 if (await comparePassword(userChangepassword.confirmedOldPassword, user.password) === false) {
     throw new GraphQLError('your confirmed old password does not matched')
@@ -112,7 +114,7 @@ if(userChangepassword.password !== userChangepassword.confirmedPassword){
      
    await this.userepository.save(user)
 
-   console.log(user)
+  // console.log(user)
    return user
 }
 

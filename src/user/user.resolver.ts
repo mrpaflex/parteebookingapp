@@ -7,6 +7,9 @@ import { MailService } from 'src/mail/mail.service';
 import { ChangePasswordDTO } from './input/changePassword.input';
 import { ForgetUserPasswordDTO } from './dto/forgetPassword.input';
 import { ResetPasswordDTO } from './dto/resetPassword.input';
+import { UseGuards } from '@nestjs/common';
+import { GqlAuthGuard } from 'src/auth/guards/graphql.guard';
+import { GetCurrentGqlUser } from 'src/common/decorators/graphQl.decorator';
 
 @Resolver(of=> CreateUserEntity)
 export class UserResolver {
@@ -29,10 +32,19 @@ export class UserResolver {
     ){
         return this.userservice.updateUser(id, updateuser)
     }
+     
+
+    // @Mutation(returns => CreateUserEntity)
+    // @UseGuards(GqlAuthGuard)
+    // async userChnagePassword(@Args('id') id: string, @Args('userchangePasswordinput') userChangepassword: ChangePasswordDTO){
+    //     return await this.userservice.changeUserPassword(id, userChangepassword)
+
+    // }
 
     @Mutation(returns => CreateUserEntity)
-    async userChnagePassword(@Args('id') id: string, @Args('userchangePasswordinput') userChangepassword: ChangePasswordDTO){
-        return await this.userservice.changeUserPassword(id, userChangepassword)
+    @UseGuards(GqlAuthGuard)
+    async userChnagePassword(@GetCurrentGqlUser()user: CreateUserEntity, @Args('userchangePasswordinput') userChangepassword: ChangePasswordDTO){
+        return await this.userservice.changeUserPassword(user, userChangepassword)
 
     }
 
