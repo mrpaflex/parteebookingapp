@@ -32,22 +32,28 @@ export class AuthController {
 
   
 
-    @Get('userprofile')
-    @UseGuards(JwtAuthGuard)
-    async currentUserLoginProfile(@GetRestApiCurrentUser() user: CreateUserEntity){
-        return user;
-    }
+    // @Get('userprofile')
+    // @UseGuards(JwtAuthGuard)
+    // async currentUserLoginProfile(@GetRestApiCurrentUser() user: CreateUserEntity){
+    //     return user;
+    // }
 
-    @Get('vendorprofile')
-    @UseGuards(JwtAuthGuard)
-    async currentvendorLoginProfile(@GetRestApiCurrentUser() user: VendorEntity){
-        return user;
-    }
+    // @Get('vendorprofile')
+    // @UseGuards(JwtAuthGuard)
+    // async currentvendorLoginProfile(@GetRestApiCurrentUser() user: VendorEntity){
+    //     return user;
+    // }
 
-    @Get('plannerprofile')
+    // @Get('plannerprofile')
+    // @UseGuards(JwtAuthGuard)
+    // async currentplannerLoginProfile(@GetRestApiCurrentUser() user: PlannerEntity){
+    //     return user;
+    // }
+
+    @Get('profile')
     @UseGuards(JwtAuthGuard)
-    async currentplannerLoginProfile(@GetRestApiCurrentUser() user: PlannerEntity){
-        return user;
+    async myprofile(@GetRestApiCurrentUser() user: PlannerEntity | VendorEntity | CreateUserEntity){
+      return user
     }
 
    
