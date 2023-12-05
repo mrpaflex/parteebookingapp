@@ -11,6 +11,7 @@ import { VendorEntity } from 'src/vendor/entities/vendor.entity';
 import { PlannerEntity } from 'src/planner/entities/planner.entity';
 import { confirmedVendorEmailDTO } from 'src/vendor/dto/confirmedVendorEmail.dto';
 import { confirmedPlannerEmailDTO } from 'src/planner/dto/confirmedPlanner.dto';
+import { verifyEmailDto } from './dto/verifty.email.dto';
 
 
 @Injectable()
@@ -41,7 +42,7 @@ export class MailService {
           
     }
 
-    //for user email confirmation
+    //send user email confirmation
     async sendUserConfirmation(user: CreateUserEntity){
         // const emailtoken = Math.floor(1000 + Math.random() * 9000).toString();
         const emailtoken =crypto.randomBytes(32).toString('hex');
@@ -70,7 +71,7 @@ export class MailService {
     }  
 
 
-    //confirmed email token for Vendor
+    //send email token for Vendor
     async sendVendorConfirmation(vendor: VendorEntity){
         // const emailtoken = Math.floor(1000 + Math.random() * 9000).toString();
         const emailtoken =crypto.randomBytes(32).toString('hex');
@@ -99,7 +100,7 @@ export class MailService {
     }
 
 
-     //confirmed email token for Planner
+     //send email token for Planner
      async sendPlannerConfirmation(planner: PlannerEntity){
         // const emailtoken = Math.floor(1000 + Math.random() * 9000).toString();
         const emailtoken =crypto.randomBytes(32).toString('hex');
@@ -197,5 +198,26 @@ export class MailService {
         return {
             info: 'you are now verified'
         }
+     }
+
+     async verifyemail(input: verifyEmailDto){
+
+        const user  = await this.userRespos.findOne({ where:{   email: input.email }})
+
+        const vendor  = await this.vendorRespos.findOne({where:{   email: input.email } })
+
+        const planner  = await this.plannerRespos.findOne({ where:{email: input.email} })
+
+        if (user) {
+            return await this.confirmedUserEmail(input)
+        }
+        if (vendor) {
+            return await this.confirmedVendorEmail(input)
+        }
+
+        if (planner) {
+            return await this.confirmedPlannerEmail(input)
+        }
+
      }
 }
