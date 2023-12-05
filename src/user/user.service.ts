@@ -107,12 +107,13 @@ if(userChangepassword.password !== userChangepassword.confirmedPassword){
     throw new GraphQLError('password and confirmed password do not matched')
    }
 
-     user.password = await hashed(userChangepassword.password)
+   user.password = await hashed(userChangepassword.password)
 
-     const updatedPassword = Object.assign(user, userChangepassword);
+     
+   await this.userepository.save(user)
 
-   //await this.userepository.save(user)
-   return updatedPassword
+   console.log(user)
+   return user
 }
 
 //this is the real one
