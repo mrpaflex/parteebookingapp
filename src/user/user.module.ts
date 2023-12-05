@@ -9,6 +9,7 @@ import { UserController } from './user.controller';
 import { ConfigService } from '@nestjs/config';
 import { VendorEntity } from 'src/vendor/entities/vendor.entity';
 import { PlannerEntity } from 'src/planner/entities/planner.entity';
+import { StatusController } from './status.controller';
 
 @Module({
   imports: [TypeOrmModule.forFeature([
@@ -27,6 +28,6 @@ import { PlannerEntity } from 'src/planner/entities/planner.entity';
     ConfigService,
   ],
   exports: [UserService],
-  controllers: [UserController]
+  controllers: [UserController, StatusController]
 })
 export class UserModule {}
